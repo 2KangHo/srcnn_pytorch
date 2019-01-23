@@ -8,7 +8,7 @@ import numpy as np
 
 def noisy(img, std=3):
     mean = 0
-    gauss = np.random.normal(mean, std, img.shape)
+    gauss = np.random.normal(mean, std, img.size)
     noisy = img + gauss
     return noisy
 
