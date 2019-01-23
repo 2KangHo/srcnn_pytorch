@@ -4,13 +4,17 @@ from os import listdir
 from os.path import join
 from PIL import Image, ImageFilter
 import numpy as np
+import torchvision as vision
 
 
-def noisy(img, std=3):
-    mean = 0
-    w, h = img.size
-    gauss = np.random.normal(mean, std, (h, w, 3))
-    noisy = img + gauss
+toPIL = vision.transforms.ToPILImage()
+
+
+def noisy(img, std=3.0):
+    mean = 0.0
+    gauss = np.random.normal(mean, std, (img.height, img.width, 3))
+    # noisy = np.clip(np.uint8(img + gauss), 0, 255)
+    noisy = np.uint8(img + gauss)
     return noisy
 
 
@@ -24,7 +28,7 @@ def load_img(filepath):
 
 
 class DatasetFromFolder(data.Dataset):
-    def __init__(self, image_dir, input_transform=None, target_transform=None, add_noise=None, noise_std=3):
+    def __init__(self, image_dir, input_transform=None, target_transform=None, add_noise=None, noise_std=3.0):
         super(DatasetFromFolder, self).__init__()
         self.image_filenames = [join(image_dir, x)
                                 for x in listdir(image_dir) if is_image_file(x)]
@@ -40,6 +44,7 @@ class DatasetFromFolder(data.Dataset):
         if self.input_transform:
             if self.add_noise:
                 input = noisy(input, self.noise_std)
+                input = toPIL(input)
             input = self.input_transform(input)
         if self.target_transform:
             target = self.target_transform(target)
