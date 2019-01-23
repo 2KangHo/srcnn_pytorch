@@ -6,9 +6,8 @@ from PIL import Image, ImageFilter
 import numpy as np
 
 
-def noisy(img):
+def noisy(img, std=3):
     mean = 0
-    std = 3
     gauss = np.random.normal(mean, std, img.shape)
     noisy = img + gauss
     return noisy
@@ -24,7 +23,7 @@ def load_img(filepath):
 
 
 class DatasetFromFolder(data.Dataset):
-    def __init__(self, image_dir, input_transform=None, target_transform=None, add_noise=None):
+    def __init__(self, image_dir, input_transform=None, target_transform=None, add_noise=None, noise_std=3):
         super(DatasetFromFolder, self).__init__()
         self.image_filenames = [join(image_dir, x)
                                 for x in listdir(image_dir) if is_image_file(x)]
@@ -37,7 +36,7 @@ class DatasetFromFolder(data.Dataset):
         target = input.copy()
         if self.input_transform:
             if self.add_noise:
-                input = noisy(input)
+                input = noisy(input, noise_std)
             input = self.input_transform(input)
         if self.target_transform:
             target = self.target_transform(target)
