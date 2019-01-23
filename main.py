@@ -14,7 +14,7 @@ from model import SRCNN
 
 parser = argparse.ArgumentParser(
     description='PyTorch Super Resolution Example')
-parser.add_argument('--upscale_factor', type=int, default=3,
+parser.add_argument('--upscale_factor', type=int, default=2,
                     required=True, help="super resolution upscale factor")
 parser.add_argument('--batch_size', type=int, default=64,
                     help='training batch size')
