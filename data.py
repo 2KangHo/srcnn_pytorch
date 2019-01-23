@@ -51,7 +51,7 @@ def target_transform(crop_size):
     ])
 
 
-def get_training_set(upscale_factor):
+def get_training_set(upscale_factor, add_noise=None):
     root_dir = download_bsd300()
 
     train_dir = join(root_dir, "train")
@@ -60,7 +60,8 @@ def get_training_set(upscale_factor):
     return DatasetFromFolder(train_dir,
                              input_transform=input_transform(
                                  crop_size, upscale_factor),
-                             target_transform=target_transform(crop_size))
+                             target_transform=target_transform(crop_size),
+                             add_noise=add_noise)
 
 
 def get_test_set(upscale_factor):
