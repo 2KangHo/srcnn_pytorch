@@ -96,7 +96,7 @@ def test():
 
         prediction = srcnn(input)
         mse = criterion(prediction, target)
-        psnr = 10 * log10(1 / mse.data[0])
+        psnr = 10 * log10(1 / mse.item())
         avg_psnr += psnr
     print("===> Avg. PSNR: {:.4f} dB".format(
         avg_psnr / len(testing_data_loader)))
