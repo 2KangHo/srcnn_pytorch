@@ -7,13 +7,14 @@ from os import errno
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import torch.backends.cudnn as cudnn
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
 from data import get_training_set, get_test_set
 from model import SRCNN
 
 parser = argparse.ArgumentParser(
-    description='PyTorch Super Resolution Example')
+    description='PyTorch SRCNN')
 parser.add_argument('--upscale_factor', type=int, default=2,
                     required=True, help="super resolution upscale factor")
 parser.add_argument('--batch_size', type=int, default=64,
@@ -42,6 +43,9 @@ print(opt)
 use_cuda = opt.cuda
 if use_cuda and not torch.cuda.is_available():
     raise Exception("No GPU found, please run without --cuda")
+
+
+cudnn.benchmark = True
 
 
 train_set = get_training_set(opt.upscale_factor, opt.add_noise, opt.noise_std)
