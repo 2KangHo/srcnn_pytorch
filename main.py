@@ -29,6 +29,9 @@ parser.add_argument('--threads', type=int, default=16,
                     help='number of threads for data loader to use')
 parser.add_argument(
     '--gpuids', default=[0], nargs='+', help='GPU ID for using')
+parser.add_argument('--add_noise', action='store_true', help='add gaussian noise?')
+parser.add_argument('--noise_std', type=int, default=3,
+                    help='standard deviation of gaussian noise')
 opt = parser.parse_args()
 
 opt.gpuids = list(map(int, opt.gpuids))
@@ -40,7 +43,7 @@ if use_cuda and not torch.cuda.is_available():
     raise Exception("No GPU found, please run without --cuda")
 
 
-train_set = get_training_set(opt.upscale_factor)
+train_set = get_training_set(opt.upscale_factor, opt.add_noise, opt.noise_std)
 test_set = get_test_set(opt.upscale_factor)
 training_data_loader = DataLoader(
     dataset=train_set, num_workers=opt.threads, batch_size=opt.batch_size, shuffle=True)
