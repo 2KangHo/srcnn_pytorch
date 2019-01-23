@@ -2,7 +2,7 @@ from os.path import exists, join, basename
 from os import makedirs, remove
 from six.moves import urllib
 import tarfile
-from torchvision.transforms import Compose, RandomCrop, ToTensor, Resize
+from torchvision.transforms import Compose, CenterCrop, ToTensor, Resize
 
 from data_utils import DatasetFromFolder
 
@@ -37,16 +37,16 @@ def calculate_valid_crop_size(crop_size, upscale_factor):
 
 def input_transform(crop_size, upscale_factor):
     return Compose([
-        RandomCrop(crop_size),
+        CenterCrop(crop_size),
         Resize((crop_size//(upscale_factor*2), crop_size//upscale_factor)),
-        Resize(crop_size),
+        Resize((crop_size, crop_size)),
         ToTensor(),
     ])
 
 
 def target_transform(crop_size):
     return Compose([
-        RandomCrop(crop_size),
+        CenterCrop(crop_size),
         ToTensor(),
     ])
 
