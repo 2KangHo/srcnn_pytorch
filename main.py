@@ -27,9 +27,10 @@ parser.add_argument('--lr', type=float, default=0.01,
 parser.add_argument('--cuda', action='store_true', help='use cuda?')
 parser.add_argument('--threads', type=int, default=16,
                     help='number of threads for data loader to use')
-parser.add_argument(
-    '--gpuids', default=[0], nargs='+', help='GPU ID for using')
-parser.add_argument('--add_noise', action='store_true', help='add gaussian noise?')
+parser.add_argument('--gpuids', default=[0], nargs='+',
+                    help='GPU ID for using')
+parser.add_argument('--add_noise', action='store_true',
+                    help='add gaussian noise?')
 parser.add_argument('--noise_std', type=float, default=3.0,
                     help='standard deviation of gaussian noise')
 opt = parser.parse_args()
