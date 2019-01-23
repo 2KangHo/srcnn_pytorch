@@ -39,6 +39,7 @@ def input_transform(crop_size, upscale_factor):
     return Compose([
         RandomCrop(crop_size),
         Resize((crop_size//(upscale_factor*2), crop_size//upscale_factor)),
+        Resize(crop_size),
         ToTensor(),
     ])
 
