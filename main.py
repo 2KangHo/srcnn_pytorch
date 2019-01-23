@@ -14,18 +14,18 @@ from model import SRCNN
 
 parser = argparse.ArgumentParser(
     description='PyTorch Super Resolution Example')
-parser.add_argument('--upscale_factor', type=int,
+parser.add_argument('--upscale_factor', type=int, default=3,
                     required=True, help="super resolution upscale factor")
 parser.add_argument('--batch_size', type=int, default=64,
                     help='training batch size')
 parser.add_argument('--test_batch_size', type=int,
                     default=10, help='testing batch size')
-parser.add_argument('--epochs', type=int, default=2,
+parser.add_argument('--epochs', type=int, default=100,
                     help='number of epochs to train for')
 parser.add_argument('--lr', type=float, default=0.01,
                     help='Learning Rate. Default=0.01')
 parser.add_argument('--cuda', action='store_true', help='use cuda?')
-parser.add_argument('--threads', type=int, default=4,
+parser.add_argument('--threads', type=int, default=16,
                     help='number of threads for data loader to use')
 parser.add_argument(
     '--gpuids', default=[0], nargs='+', help='GPU ID for using')
