@@ -3,6 +3,15 @@ import torch.utils.data as data
 from os import listdir
 from os.path import join
 from PIL import Image, ImageFilter
+import numpy as np
+
+
+def noisy(img):
+    mean = 0
+    std = 3
+    gauss = np.random.normal(mean, std, img.shape)
+    noisy = img + gauss
+    return noisy
 
 
 def is_image_file(filename):
@@ -15,7 +24,7 @@ def load_img(filepath):
 
 
 class DatasetFromFolder(data.Dataset):
-    def __init__(self, image_dir, input_transform=None, target_transform=None):
+    def __init__(self, image_dir, input_transform=None, target_transform=None, add_noise=None):
         super(DatasetFromFolder, self).__init__()
         self.image_filenames = [join(image_dir, x)
                                 for x in listdir(image_dir) if is_image_file(x)]
@@ -27,6 +36,8 @@ class DatasetFromFolder(data.Dataset):
         input = load_img(self.image_filenames[index])
         target = input.copy()
         if self.input_transform:
+            if self.add_noise:
+                input = noisy(input)
             input = self.input_transform(input)
         if self.target_transform:
             target = self.target_transform(target)
