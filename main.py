@@ -79,6 +79,8 @@ def main():
     if opt.test:
         model_name = join("model", opt.model)
         model = torch.load(model_name)
+        model = nn.DataParallel(model, device_ids=opt.gpuids,
+                                output_device=opt.gpuids[0])
         start_time = time.time()
         test(model, criterion, testing_data_loader)
         elapsed_time = time.time() - start_time
